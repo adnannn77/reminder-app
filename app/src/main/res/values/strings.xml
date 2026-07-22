@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- App -->
+    <string name="app_name">Reminder</string>
+
+    <!-- Authentication -->
+    <string name="welcome">Welcome Back</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+
+    <string name="full_name">Full Name</string>
+
+    <string name="dont_have_account">Don\'t have an account?</string>
+    <string name="already_have_account">Already have an account?</string>
+
+    <string name="create_account">Create Account</string>
+
+    <string name="never_miss">Never miss what\'s important.</string>
+
+    <!-- Home -->
+    <string name="good_morning">Good Morning</string>
+    <string name="today_reminder">Today\'s Reminder</string>
+    <string name="upcoming_holiday">Upcoming Holiday</string>
+    <string name="weather_today">Today\'s Weather</string>
+    <string name="location">Location</string>
+    <string name="add_reminder">Add Reminder</string>
+
+    <!-- Dummy -->
+    <string name="default_user">Tuan Muda</string>
+    <string name="default_weather">Sunny</string>
+    <string name="default_temperature">27°C</string>
+    <string name="default_wind">12 km/h</string>
+    <string name="default_holiday">Indonesia Independence Day</string>
+    <string name="default_date">17 August 2026</string>
+
+</resources>
