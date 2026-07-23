@@ -3,10 +3,16 @@ const express = require("express");
 const router = express.Router();
 
 const reminderController = require("../controllers/reminderController");
+const db = require("../config/database");
 
 // ==============================
 // Reminder
 // ==============================
+
+// Debug database
+router.get("/debug", (req, res) => {
+    res.json({ dbUrl: process.env.DATABASE_URL, parsedHost: db.options?.host || "unknown" });
+});
 
 // Semua reminder (opsional)
 router.get(
