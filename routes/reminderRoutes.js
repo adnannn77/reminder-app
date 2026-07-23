@@ -26,6 +26,12 @@ router.get(
     reminderController.getByUser
 );
 
+// Reminder berdasarkan device
+router.get(
+    "/reminders/device/:device_id",
+    reminderController.getByDevice
+);
+
 // Reminder berdasarkan ID
 router.get(
     "/reminders/:id",

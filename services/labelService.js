@@ -15,10 +15,18 @@ const getById = async (id) => {
     return rows;
 };
 
-const create = async (name, color) => {
+const getByDevice = async (deviceId) => {
+    const { rows } = await db.query(
+        "SELECT * FROM labels WHERE device_id=$1 ORDER BY id ASC",
+        [deviceId]
+    );
+    return rows;
+};
+
+const create = async (name, color, deviceId) => {
     await db.query(
-        "INSERT INTO labels(name,color) VALUES($1,$2)",
-        [name, color]
+        "INSERT INTO labels(name, color, device_id) VALUES($1, $2, $3)",
+        [name, color, deviceId || null]
     );
 };
 
@@ -39,6 +47,7 @@ const remove = async (id) => {
 module.exports = {
     getAll,
     getById,
+    getByDevice,
     create,
     update,
     remove

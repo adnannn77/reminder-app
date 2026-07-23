@@ -29,6 +29,20 @@ const getAll = async (req, res) => {
 };
 
 // ==============================
+// GET Label Berdasarkan Device
+// ==============================
+
+const getByDevice = async (req, res) => {
+    try {
+        const { device_id } = req.params;
+        const data = await labelService.getByDevice(device_id);
+        return response.success(res, "Label device berhasil diambil", data);
+    } catch (err) {
+        return response.error(res, err.message);
+    }
+};
+
+// ==============================
 // GET Label Berdasarkan ID
 // ==============================
 
@@ -74,7 +88,8 @@ const create = async (req, res) => {
 
         await labelService.create(
             req.body.name,
-            req.body.color
+            req.body.color,
+            req.body.device_id
         );
 
         return response.created(
@@ -174,6 +189,7 @@ const remove = async (req, res) => {
 module.exports = {
 
     getAll,
+    getByDevice,
     getById,
     create,
     update,

@@ -77,6 +77,28 @@ const getByUser = async (req, res) => {
 };
 
 // ==============================
+// Ambil reminder berdasarkan device
+// ==============================
+
+const getByDevice = async (req, res) => {
+    try {
+        const { device_id } = req.params;
+        const reminders = await reminderService.getByDevice(device_id);
+        return res.json({
+            status: true,
+            message: "Reminder device berhasil diambil",
+            data: reminders
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            status: false,
+            message: error.message
+        });
+    }
+};
+
+// ==============================
 // Ambil reminder berdasarkan ID
 // ==============================
 
@@ -345,6 +367,7 @@ module.exports = {
 
     getAll,
     getByUser,
+    getByDevice,
     getById,
     create,
     update,

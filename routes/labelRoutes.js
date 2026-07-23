@@ -13,6 +13,11 @@ router.get(
 );
 
 router.get(
+    "/labels/device/:device_id",
+    labelController.getByDevice
+);
+
+router.get(
     "/labels/:id",
     labelController.getById
 );

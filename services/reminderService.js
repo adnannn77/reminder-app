@@ -98,6 +98,57 @@ const getByUser = async (userId) => {
     return rows;
 };
 
+const getByDevice = async (deviceId) => {
+    const { rows } = await db.query(`
+        SELECT
+            r.id,
+            r.user_id,
+            r.label_id,
+            r.repeat_type_id,
+            r.title,
+            r.note,
+            r.url,
+
+            TO_CHAR(r.reminder_date,'YYYY-MM-DD') AS reminder_date,
+            TO_CHAR(r.reminder_time,'HH24:MI:SS') AS reminder_time,
+
+            r.location_name,
+            r.latitude,
+            r.longitude,
+
+            r.priority,
+            r.reminder_before,
+            r.color,
+            r.is_completed,
+            r.is_archived,
+
+            TO_CHAR(r.created_at,'YYYY-MM-DD HH24:MI:SS') AS created_at,
+            TO_CHAR(r.updated_at,'YYYY-MM-DD HH24:MI:SS') AS updated_at,
+
+            l.name  AS label_name,
+            l.color AS label_color,
+
+            rt.name AS repeat_type_name
+
+        FROM reminders r
+
+        LEFT JOIN labels l
+            ON r.label_id = l.id
+
+        LEFT JOIN repeat_types rt
+            ON r.repeat_type_id = rt.id
+
+        WHERE
+            r.device_id = $1
+            AND r.is_archived = FALSE
+
+        ORDER BY
+            r.reminder_date,
+            r.reminder_time
+    `, [deviceId]);
+    return rows;
+};
+
 const getById = async (id) => {
     const { rows } = await db.query(`
         SELECT
@@ -148,11 +199,11 @@ const create = async (data) => {
         INSERT INTO reminders (
             user_id, label_id, repeat_type_id, title, note, url,
             reminder_date, reminder_time, location_name, latitude, longitude,
-            priority, reminder_before, color
+            priority, reminder_before, color, device_id
         )
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)
     `, [
-        data.user_id || 1, // Default to user 1
+        data.user_id || 1,
         data.label_id || null,
         data.repeat_type_id || null,
         data.title,
@@ -165,7 +216,8 @@ const create = async (data) => {
         data.longitude,
         data.priority,
         data.reminder_before,
-        data.color
+        data.color,
+        data.device_id || null
     ]);
 };
 
@@ -217,5 +269,5 @@ const archive = async (id) => {
 };
 
 module.exports = {
-    getAll, getByUser, getById, create, update, remove, complete, archive
+    getAll, getByUser, getByDevice, getById, create, update, remove, complete, archive
 };
