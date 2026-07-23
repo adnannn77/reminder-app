@@ -3,9 +3,9 @@ const { URL } = require("url");
 
 let dbUrl = process.env.DATABASE_URL;
 
-// Otomatis ubah koneksi Supabase default (IPv6) menjadi Connection Pooler (IPv4)
+// Otomatis ubah koneksi Supabase menjadi Connection Pooler (IPv4)
 // agar Vercel Serverless Functions bisa terhubung ke database.
-if (dbUrl && dbUrl.includes("db.nqrcylavorzhkwkbsqws.supabase.co")) {
+if (dbUrl && dbUrl.includes("supabase")) {
     try {
         const urlObj = new URL(dbUrl);
         urlObj.hostname = "aws-0-ap-southeast-1.pooler.supabase.com";
