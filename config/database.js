@@ -11,6 +11,10 @@ if (dbUrl && dbUrl.includes("supabase")) {
         urlObj.hostname = "aws-0-ap-southeast-1.pooler.supabase.com";
         urlObj.port = "6543";
         urlObj.username = "postgres.nqrcylavorzhkwkbsqws";
+        // Hapus bracket ] jika user tidak sengaja memasukkannya saat setting env var
+        if (urlObj.password.endsWith(']')) {
+            urlObj.password = urlObj.password.slice(0, -1);
+        }
         dbUrl = urlObj.toString();
     } catch (e) {
         console.error("Gagal mem-parsing DATABASE_URL:", e);
