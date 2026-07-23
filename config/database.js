@@ -1,13 +1,11 @@
-const mysql = require("mysql2/promise");
+const { Pool } = require("pg");
 
-const db = mysql.createPool({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-    port: process.env.DB_PORT,
-    waitForConnections: true,
-    connectionLimit: 10
+const db = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    // Diperlukan untuk koneksi ke Supabase / Cloud Provider
+    ssl: {
+        rejectUnauthorized: false
+    }
 });
 
 module.exports = db;

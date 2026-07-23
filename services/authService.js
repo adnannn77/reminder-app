@@ -1,28 +1,14 @@
 const db = require("../config/database");
 
-// ==============================
-// LOGIN
-// ==============================
-
 const login = async (email, password) => {
+    const { rows } = await db.query(
+        "SELECT * FROM users WHERE email = $1",
+        [email]
+    );
 
-    const sql = `
-        SELECT *
-        FROM users
-        WHERE email = ?
-    `;
-
-    const [rows] = await db.query(sql, [email]);
-
-    if (rows.length === 0) {
-        return null;
-    }
-
+    if (rows.length === 0) return null;
     const user = rows[0];
-
-    if (user.password !== password) {
-        return null;
-    }
+    if (user.password !== password) return null;
 
     return {
         id: user.id,
@@ -30,67 +16,32 @@ const login = async (email, password) => {
         email: user.email,
         photo: user.photo
     };
-
 };
-
-// ==============================
-// REGISTER
-// ==============================
 
 const register = async (nama, email, password) => {
-
     const check = await checkEmail(email);
-
     if (check.length > 0) {
-
-        return {
-            status: false,
-            message: "Email sudah digunakan"
-        };
-
+        return { status: false, message: "Email sudah digunakan" };
     }
 
-    const sql = `
-        INSERT INTO users
-        (nama, email, password, photo)
-        VALUES (?, ?, ?, '')
-    `;
+    await db.query(
+        "INSERT INTO users (nama, email, password, photo) VALUES ($1, $2, $3, '')",
+        [nama, email, password]
+    );
 
-    await db.query(sql, [
-        nama,
-        email,
-        password
-    ]);
-
-    return {
-        status: true,
-        message: "Register berhasil"
-    };
-
+    return { status: true, message: "Register berhasil" };
 };
 
-// ==============================
-// CHECK EMAIL
-// ==============================
-
 const checkEmail = async (email) => {
-
-    const sql = `
-        SELECT *
-        FROM users
-        WHERE email = ?
-    `;
-
-    const [rows] = await db.query(sql, [email]);
-
+    const { rows } = await db.query(
+        "SELECT * FROM users WHERE email = $1",
+        [email]
+    );
     return rows;
-
 };
 
 module.exports = {
-
     login,
     register,
     checkEmail
-
 };
